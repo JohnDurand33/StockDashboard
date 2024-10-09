@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.main-component {
+  background-color: #ffffff;
+  border: 3px solid #007BFF; 
+  border-radius: 8px;        
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); 
+  padding: 20px;
+  margin: 0 auto;           
+  max-width: 600px;          
+  text-align: center;       
+  transition: all 0.3s ease; 
+}
+
+.main-component:hover {
+  border-color: #0056b3; /* Darker blue on hover */
+  box-shadow: 0 6px 16px rgba(0, 86, 179, 0.3); /* Slightly larger shadow */
+}
+
+/* Button styling inside the main component */
+.main-component button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.main-component button:hover {
+  background-color: #0056b3;
+}
+
+
+.main-component input {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px; 
+}
+
+
+@media (max-width: 768px) {
+  .main-component {
+    width: 100%;
+    padding: 15px;
+  }
+}
