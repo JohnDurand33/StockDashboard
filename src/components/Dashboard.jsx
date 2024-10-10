@@ -1,27 +1,5 @@
-{/*  
-Question: Build a Dynamic Stock Price Dashboard
-Problem Statement:
-You are tasked with building a simple stock price dashboard in React. This dashboard should display a list of stocks, allow the user to filter them by price range, and sort the stocks by price in ascending or descending order.
-
-Your application should meet the following requirements:
-
-Display a list of stocks with their names and current prices.
-Allow the user to filter the stocks within a specific price range (e.g., $100 - $300).
-Allow the user to toggle between sorting the stock prices in ascending or descending order.
-The stock list should update dynamically when the user changes the filter or sorting options.
-
-1) Create rough list of stocks and priices.
-2) Display of stocks with names and prices.
-3) create function to filter stocks by price range
-4) create function to sort by ascending or descending order.
-5) add functions to appropriate event handlers
-
-
-
-*/}
-
-import { useState, useEffect, useReducer } from 'react'
-import { Table, TableContainer, TableCell, TableRow, TableHead, TableBody } from '@mui/material'
+import { useState, useMemo } from 'react';
+import { Table, TableContainer, TableCell, TableRow, TableHead, TableBody, Paper, InputBase } from '@mui/material';
 
 const stocks = [
     { id: 1, name: 'Apple', price: 150 },
@@ -34,24 +12,87 @@ const stocks = [
 ];
 
 const Dashboard = () => {
+    const [direction, setDirection] = useState('asc');
+    const [startFilter, setStartFilter] = useState('');
+    const [endFilter, setEndFilter] = useState('');
 
+    const filteredAndSortedStocks = useMemo(() => {
+        const low = startFilter !== '' ? parseFloat(startFilter) : -Infinity;
+        const high = endFilter !== '' ? parseFloat(endFilter) : Infinity;
+
+        let filtered = stocks.filter(stock => stock.price >= low && stock.price <= high);
+
+        filtered.sort((a, b) => {
+            return direction === 'asc' ? a.price - b.price : b.price - a.price;
+        });
+        return filtered
+    }, [startFilter, endFilter, direction]);
+
+    const toggleSort = () => {
+        setDirection(prevDirection => (prevDirection === 'asc' ? 'desc' : 'asc'));
+    };
+
+    const handleChangeStart = (e) => {
+        setStartFilter(e.target.value);
+    };
+
+    const handleChangeEnd = (e) => {
+        setEndFilter(e.target.value);
+    };
 
     return (
-        <TableContainer component={paper}>
-            <Table >
-                <TableHead>
-                    <TableCell>Stock Name</TableCell>
-                    <TableCell>Stock Price</TableCell>
+        <TableContainer component={Paper}>
+            <Table>
+                <TableHead sx={{ borderBottom: '2px solid black' }}>
+                    <TableRow sx={{ fontWeight: '600' }}>
+                        <TableCell sx={{ fontWeight: 'inherit', color: 'red' }}>Stock Name</TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'inherit', color: 'green', cursor: 'pointer' }}
+                            onClick={toggleSort}
+                        >
+                            Stock Price {direction === 'asc' ? '↑' : '↓'}
+                        </TableCell>
+                    </TableRow>
                 </TableHead>
                 <TableBody>
-                {stocks.map((stock, index) =>
-                    <TableRow key={index}>
-                        <TableCell>{stock.name}</TableCell>
-                        <TableCell>{stock.price}.00</TableCell>
-                    </TableRow>)}
+                    {filteredAndSortedStocks.length > 0 ? (
+                        filteredAndSortedStocks.map(stock => (
+                            <TableRow key={stock.id}>
+                                <TableCell>{stock.name}</TableCell>
+                                <TableCell>{stock.price}.00</TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={2} style={{ textAlign: 'center' }}>
+                                No stocks found
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <label htmlFor='from-price' style={{ paddingLeft: '20px' }}>From $</label>
+                <InputBase
+                    type='number'
+                    placeholder="0.00"
+                    name='from-price'
+                    value={startFilter}
+                    sx={{ width: '25%', ml: '20px' }}
+                    onChange={handleChangeStart}
+                />
+                <label htmlFor="to-price" style={{ paddingLeft: '20px' }}>Ending Price</label>
+                <InputBase
+                    type='number'
+                    placeholder="0.00"
+                    name='to-price'
+                    value={endFilter}
+                    sx={{ width: '25%', ml: '20px' }}
+                    onChange={handleChangeEnd}
+                />
+            </div>
         </TableContainer>
-    )
+    );
 };
+
 export default Dashboard;

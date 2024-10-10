@@ -2,7 +2,11 @@ import { useState } from 'react'
 import Dashboard from './components/Dashboard'
 
 function App() {
-    <Dashboard className='main-component' />
+    return (
+    <div className = 'main-component'>
+        <Dashboard />
+        </div>
+    )
 }
 
 export default App
