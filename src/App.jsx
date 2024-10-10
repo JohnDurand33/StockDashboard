@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import React from 'react'
 import Dashboard from './components/Dashboard'
+import ClickCounterClosure from './components/ClickCounterClosure'
 
 function App() {
     return (
     <div className = 'main-component'>
-        <Dashboard />
+            {/* <Dashboard /> */}
+            <ClickCounterClosure />
         </div>
     )
 }
