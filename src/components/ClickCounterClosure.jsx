@@ -1,4 +1,4 @@
-import React, {useState, useReducer, useMemo, useCallback } from 'react'
+import React, {useState, useReducer, useRef, useCallback } from 'react'
 
 const initialState = 0
 
@@ -27,7 +27,7 @@ const ClickCounterClosure = () => {
         }
     }, []);
 
-    const generateIdClosure = useMemo(generateMessageId, []);
+    const generateIdClosure = useRef(generateMessageId()).current;
 
     const handleClick = (actionType) => {
         dispatch({ type: actionType });
